@@ -1,0 +1,63 @@
+CAP_A = 4  # Capacity of Jug A
+CAP_B = 3  # Capacity of Jug B
+
+visited = set()   # To track visited states
+path = []         # To store path (sequence of steps)
+
+def dfs(a, b):
+    state = (a, b)
+    if state in visited:
+        return False
+
+    visited.add(state)
+    path.append(f"Jug A: {a} | Jug B: {b}")
+
+    # Goal condition
+    if a == 2 or b == 2:
+        print("Goal reached!\n")
+        for step in path:
+            print(step)
+        return True
+
+    # All possible operations
+    # 1. Fill Jug A
+    if dfs(CAP_A, b): return True
+
+    # 2. Fill Jug B
+    if dfs(a, CAP_B): return True
+
+    # 3. Empty Jug A
+    if dfs(0, b): return True
+
+    # 4. Empty Jug B
+    if dfs(a, 0): return True
+
+    # 5. Pour A -> B
+    pourAB = min(a, CAP_B - b)
+    if dfs(a - pourAB, b + pourAB): return True
+
+    # 6. Pour B -> A
+    pourBA = min(b, CAP_A - a)
+    if dfs(a + pourBA, b - pourBA): return True
+
+    # Backtrack (remove this step if no path found)
+    path.pop()
+    return False
+
+
+def main():
+    print("Water Jug Problem using DFS\n")
+    dfs(0, 0)
+    print("\nSearch complete.")
+
+
+if _name_ == "_main_":
+    main()
+
+
+
+
+
+
+
+
